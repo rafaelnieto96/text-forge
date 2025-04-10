@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary-color: #00b4ff; /* Azul brillante original */
-    --primary-light: #00e5ff; /* Azul claro original */
+    --primary-color: #ff0000; /* Rojo */
+    --primary-light: #ff3333; /* Rojo claro */
     --primary-gradient: linear-gradient(to right, var(--primary-light), var(--primary-color));
-    --secondary-light: #d0f0ff; /* Azul muy claro original */
-    --background-color: rgb(30, 35, 50); /* Fondo azul oscuro original */
-    --text-color: #ffffff; /* Texto blanco original */
-    --card-bg: rgba(30, 60, 120, 0.15); /* Fondo tarjeta azul translúcido original */
-    --card-bg-hover: rgba(50, 90, 150, 0.2); /* Hover azul original */
-    --card-border: rgba(150, 230, 255, 0.2); /* Borde azul claro original */
-    --card-border-hover: rgba(170, 240, 255, 0.5); /* Borde hover azul original */
-    --text-shadow: rgba(0, 200, 255, 0.2); /* Sombra texto azul original */
+    --secondary-light: #ffcccc; /* Rojo muy claro */
+    --background-color: rgb(0, 0, 0); /* Fondo negro */
+    --text-color: #ffffff; /* Texto blanco */
+    --card-bg: rgba(30, 0, 0, 0.15); /* Fondo tarjeta rojo translúcido */
+    --card-bg-hover: rgba(50, 0, 0, 0.2); /* Hover rojo */
+    --card-border: rgba(255, 200, 200, 0.2); /* Borde rojo claro */
+    --card-border-hover: rgba(255, 220, 220, 0.5); /* Borde hover rojo */
+    --text-shadow: rgba(255, 0, 0, 0.2); /* Sombra texto rojo */
     --shadow-size-large: 10px;
     --shadow-size-medium: 8px;
     --shadow-size-small: 6px;
-    --card-shadow: rgba(0, 150, 255, 0.18);
-    --card-shadow-hover: rgba(0, 150, 255, 0.2);
-    --glow-shadow: rgba(0, 200, 255, 0.15);
+    --card-shadow: rgba(255, 0, 0, 0.18);
+    --card-shadow-hover: rgba(255, 0, 0, 0.2);
+    --glow-shadow: rgba(255, 0, 0, 0.15);
 }
 
 * {
@@ -62,8 +62,22 @@ header {
     margin-bottom: 3rem;
 }
 
+header.small-header {
+    margin-bottom: 1.5rem;
+}
+
+header.small-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.25rem;
+}
+
+header.small-header .subtitle {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
 h1 {
-    font-size: 4.5rem; /* Volver al tamaño original */
+    font-size: 4.5rem;
     font-weight: 700;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
@@ -74,11 +88,12 @@ h1 {
 }
 
 .subtitle {
-    color: var(--text-color); /* Color de texto original */
-    font-size: 1.3rem; /* Tamaño original */
+    color: var(--text-color);
+    font-size: 1.3rem;
     opacity: 0.9;
     font-weight: 300;
     text-shadow: 0 0 var(--shadow-size-small) var(--text-shadow);
+    margin-bottom: 2rem;
 }
 
 .generator-selector {
@@ -218,6 +233,110 @@ textarea {
     line-height: 1.6;
 }
 
+.active-section {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.hidden-section {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.features-description {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.feature-card {
+    background-color: var(--card-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 2rem;
+    border-radius: 18px;
+    border: 1px solid var(--card-border);
+    transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    background-color: var(--card-bg-hover);
+    border: 1px solid var(--card-border-hover);
+    box-shadow: 0 15px 40px var(--card-shadow-hover);
+}
+
+.feature-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 var(--shadow-size-small) var(--text-shadow);
+}
+
+.feature-card p {
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.select-feature-btn {
+    display: none;
+}
+
+.back-btn {
+    background: var(--card-bg);
+    color: var(--text-color);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.back-btn:hover {
+    background: var(--card-bg-hover);
+    border: 1px solid var(--card-border-hover);
+    transform: translateX(-5px);
+}
+
+.back-btn i {
+    transition: transform 0.3s ease;
+}
+
+.back-btn:hover i {
+    transform: translateX(-5px);
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
@@ -233,5 +352,14 @@ textarea {
     
     .tab-btn {
         width: 100%;
+    }
+    
+    .features-description {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
     }
 } 

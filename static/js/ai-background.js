@@ -33,7 +33,7 @@ function setup() {
 }
 
 function draw() {
-    background(30, 35, 50);
+    background(0, 0, 0);
 
     neurons.forEach(neuron => {
         neuron.update();
@@ -54,7 +54,7 @@ class Neuron {
         this.pulse = 0;
         const baseSize = window.innerWidth < 768 ? 6 : 8;
         this.targetSize = random(baseSize, baseSize * 1.8);
-        this.color = color(random(180, 220), random(180, 255), 255, 200);
+        this.color = color(255, random(180, 220), random(180, 220), 200);
     }
 
     update() {
@@ -122,7 +122,7 @@ function drawNeuralConnections() {
 
 function globalPulseEffect() {
     noFill();
-    stroke(180, 100, 255, window.innerWidth < 768 ? 40 : 70);
+    stroke(255, 0, 0, window.innerWidth < 768 ? 40 : 70);
     strokeWeight(window.innerWidth < 768 ? 1 : 1.5);
     let pulseSize = (frameCount % 120) * (window.innerWidth < 768 ? 3 : 4);
     ellipse(mouseX, mouseY, pulseSize, pulseSize);

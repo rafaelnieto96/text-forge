@@ -1,0 +1,4 @@
+flask==3.0.2
+cohere==4.47
+langchain==0.1.9
+python-dotenv==1.0.1 

@@ -28,11 +28,22 @@
 
 html, body {
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     font-family: 'Montserrat', sans-serif;
     color: var(--text-color);
-    background-color: var(--background-color);
+    background-color: transparent;
+}
+
+body {
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 #background-container {
@@ -48,8 +59,8 @@ html, body {
 .container {
     position: relative;
     width: 100%;
-    height: 100%;
-    max-width: 1200px;
+    height: 100vh;
+    max-width: 1400px;
     margin: 0 auto;
     z-index: 1;
     padding: 2rem;
@@ -134,15 +145,112 @@ h1 {
 }
 
 .generator-content {
-    background-color: var(--card-bg);
-    backdrop-filter: blur(8px); /* Blur original */
+    height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(30, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     padding: 2rem;
-    border-radius: 18px; /* Radius original */
-    box-shadow: 0 8px 32px var(--card-shadow); /* Sombra original */
-    margin-bottom: 2rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px var(--card-shadow);
     border: 1px solid var(--card-border);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Transición original */
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.form-layout {
+    display: flex;
+    gap: 2rem;
+    height: calc(100vh - 200px);
+    overflow: hidden;
+}
+
+.form-side {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.result-side {
+    flex: 1;
+    overflow-y: auto;
+    padding-left: 1rem;
+    border-left: 1px solid var(--card-border);
+}
+
+.result-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.result-container h2 {
+    margin-bottom: 1rem;
+}
+
+.result-content {
+    flex: 1;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    border: 1px solid var(--card-border);
+}
+
+.generate-btn {
+    position: relative;
+    overflow: hidden;
+    background: var(--primary-gradient);
+    color: var(--text-color);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px var(--card-shadow);
+}
+
+.generate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px var(--card-shadow-hover), 0 0 10px var(--glow-shadow);
+}
+
+.btn-text {
+    display: inline-block;
+}
+
+.loading-dots {
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.generate-btn.loading .btn-text {
+    visibility: hidden;
+}
+
+.generate-btn.loading .loading-dots {
+    display: inline-block;
+}
+
+.loading-dots:after {
+    content: '.';
+    animation: dots 1.5s steps(5, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60% { content: '...'; }
+    80%, 100% { content: ''; }
 }
 
 .tab-content {
@@ -187,70 +295,21 @@ textarea {
     resize: vertical;
 }
 
-.generate-btn {
-    background: var(--primary-gradient);
-    color: var(--text-color);
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 12px; /* Radius original */
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    width: 100%;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 15px var(--card-shadow); /* Sombra original */
-}
-
-.generate-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px var(--card-shadow-hover), 0 0 10px var(--glow-shadow);
-}
-
-.result-container {
-    background-color: var(--card-bg);
-    backdrop-filter: blur(8px); /* Blur original */
-    -webkit-backdrop-filter: blur(8px);
-    padding: 2rem;
-    border-radius: 18px; /* Radius original */
-    box-shadow: 0 8px 32px var(--card-shadow); /* Sombra original */
-    border: 1px solid var(--card-border);
-}
-
-.result-container h2 {
-    color: var(--text-color); /* Color original */
-    text-shadow: 0 0 var(--shadow-size-small) var(--text-shadow);
-}
-
-.result-content {
-    white-space: pre-wrap;
-    margin-top: 1rem;
-    padding: 1.5rem;
-    background-color: rgba(30, 60, 120, 0.2); /* Fondo original */
-    border-radius: 12px; /* Radius original */
-    border: 1px solid var(--card-border);
-    color: var(--text-color);
-    line-height: 1.6;
-}
-
 .active-section {
     display: block;
-    animation: fadeIn 0.5s ease;
+    z-index: 2;
+    opacity: 1;
 }
 
 .hidden-section {
     display: none;
+    z-index: 0;
+    opacity: 0;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .features-description {
@@ -258,6 +317,15 @@ textarea {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
+}
+
+.feature-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    position: relative;
+    z-index: 5;
 }
 
 .feature-card {
@@ -275,13 +343,14 @@ textarea {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    pointer-events: auto;
+    z-index: 5;
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    background-color: var(--card-bg-hover);
-    border: 1px solid var(--card-border-hover);
-    box-shadow: 0 15px 40px var(--card-shadow-hover);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px var(--card-shadow-hover), 0 0 10px var(--glow-shadow);
+    border-color: var(--card-border-hover);
 }
 
 .feature-card i {
@@ -309,24 +378,23 @@ textarea {
 }
 
 .back-btn {
-    background: var(--card-bg);
+    position: absolute;
+    left: 2rem;
+    top: 2rem;
+    z-index: 10;
+    background: var(--primary-gradient);
     color: var(--text-color);
-    padding: 0.75rem 1.5rem;
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .back-btn:hover {
-    background: var(--card-bg-hover);
-    border: 1px solid var(--card-border-hover);
-    transform: translateX(-5px);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px var(--card-shadow-hover);
 }
 
 .back-btn i {
@@ -362,4 +430,76 @@ textarea {
     .feature-card {
         padding: 1.5rem;
     }
+}
+
+/* Landing Page and Form Section Common Styles */
+#landing-page, #form-section {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Landing Page Styles */
+#landing-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#landing-page header {
+    margin-bottom: 3rem;
+}
+
+#landing-page h1 {
+    font-size: 4.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#landing-page .subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+}
+
+/* Form Section Styles */
+#form-section {
+    /* Estilos específicos de la sección de formulario */
+}
+
+#landing-page .container, #form-section .container {
+    transition: none;
+    animation: none;
+}
+
+/* Eliminar animación de fadeIn que no se usa */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.form-title {
+    flex: 1;
+    text-align: center;
+}
+
+.form-title h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.form-title p {
+    font-size: 1rem;
+    opacity: 0.9;
 } 

@@ -6,12 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabContents = document.querySelectorAll('.tab-content');
 
     function showFormSection(featureId) {
-        landingPage.classList.remove('active-section');
+        // Ocultar landing page
         landingPage.classList.add('hidden-section');
+        landingPage.classList.remove('active-section');
+        
+        // Mostrar formulario
         formSection.classList.remove('hidden-section');
         formSection.classList.add('active-section');
 
-        // Show the selected form
+        // Mostrar el formulario seleccionado
         tabContents.forEach(content => {
             content.classList.remove('active');
             if (content.id === featureId) {
@@ -21,21 +24,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showLandingPage() {
-        formSection.classList.remove('active-section');
+        // Ocultar formulario
         formSection.classList.add('hidden-section');
+        formSection.classList.remove('active-section');
+        
+        // Mostrar landing page
         landingPage.classList.remove('hidden-section');
         landingPage.classList.add('active-section');
     }
 
-    // Handle feature card selection
+    // Manejar selección de tarjetas
     featureCards.forEach(card => {
         card.addEventListener('click', () => {
+            console.log('Card clicked');
             const featureId = card.getAttribute('data-feature');
+            console.log('Feature ID:', featureId);
             showFormSection(featureId);
         });
     });
 
-    // Handle back button
+    // Manejar botón de volver
     backButton.addEventListener('click', showLandingPage);
 
     // Form submission handlers
@@ -45,6 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultDiv = document.getElementById('result');
 
     async function handleFormSubmit(form, type) {
+        const submitButton = form.querySelector('.generate-btn');
+        
+        // Mostrar estado de carga
+        submitButton.classList.add('loading');
+        
         const formData = new FormData(form);
         const data = {
             type: type,
@@ -68,6 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
             resultDiv.textContent = result.response;
         } catch (error) {
             resultDiv.textContent = `Error: ${error.message}`;
+        } finally {
+            // Quitar estado de carga
+            submitButton.classList.remove('loading');
         }
     }
 

@@ -21,10 +21,9 @@ function setup() {
     canvas.style('height', '100%');
     canvas.style('z-index', '0');
     canvas.style('pointer-events', 'none');
-    colorMode(RGB, 255, 255, 255, 1);
+    
     noFill();
     angleMode(DEGREES);
-
     calculateDensity();
 
     for (let i = 0; i < NUM_NEURONS; i++) {
@@ -32,8 +31,22 @@ function setup() {
     }
 }
 
+function drawGradientBackground(c1, c2) {
+    noFill();
+    for (let y = 0; y < height; y++) {
+        let inter = map(y, 0, height, 0, 1);
+        let c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(0, y, width, y);
+    }
+    noStroke();
+}
+
 function draw() {
-    background(0, 0, 0);
+    // Degradado de gris a morado (elegante y moderno)
+    let color1 = color(50, 50, 70);  // Gris con toque morado
+    let color2 = color(80, 40, 100);  // Morado medio
+    drawGradientBackground(color1, color2);
 
     neurons.forEach(neuron => {
         neuron.update();
@@ -42,7 +55,7 @@ function draw() {
 
     drawNeuralConnections();
 
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 768 && !document.body.classList.contains('no-pointer-effect')) {
         globalPulseEffect();
     }
 }
@@ -54,7 +67,7 @@ class Neuron {
         this.pulse = 0;
         const baseSize = window.innerWidth < 768 ? 6 : 8;
         this.targetSize = random(baseSize, baseSize * 1.8);
-        this.color = color(255, random(180, 220), random(180, 220), 200);
+        this.hue = 0; // Comenzamos en rojo (0 en HSB)
     }
 
     update() {
@@ -73,23 +86,25 @@ class Neuron {
 
     activate() {
         this.pulse = 1;
+        this.hue = (this.hue + 5) % 30; // Variación sutil entre rojos
     }
 
     show() {
         let glowSize = this.targetSize * (1 + this.pulse * 2);
-        let baseAlpha = alpha(this.color);
-        let currentAlpha = baseAlpha + (255 - baseAlpha) * sin(frameCount * 0.1 + this.pos.x * 0.1);
+        let alpha = 150 + 105 * sin(frameCount * 0.1);
 
-        let glowColor = color(hue(this.color), saturation(this.color), brightness(this.color), currentAlpha * 0.5 * (0.5 + this.pulse * 0.5));
-        fill(glowColor);
+        // Efecto de brillo interno
+        colorMode(HSB, 360, 100, 100, 255);
+        fill(360 + this.hue, 90, 100, alpha * 0.5); // Tonos rojizos
         noStroke();
         ellipse(this.pos.x, this.pos.y, glowSize);
 
-        let bodyColor = color(hue(this.color), saturation(this.color) * 0.8, brightness(this.color) * 0.9, currentAlpha);
-        stroke(bodyColor);
+        // Cuerpo principal
+        stroke(360 + this.hue, 90, 100, alpha);
         strokeWeight(window.innerWidth < 768 ? 1.5 : 2);
-        fill(30, 50, 80, 230);
+        fill(60, 40, 80); // Color morado grisáceo para el centro
         ellipse(this.pos.x, this.pos.y, this.targetSize);
+        colorMode(RGB, 255, 255, 255, 255); // Volver a RGB
     }
 }
 
@@ -102,30 +117,35 @@ function drawNeuralConnections() {
 
         others.forEach(({ neuron: b, dist }) => {
             if (dist < ACTIVATION_DISTANCE * 1.8) {
-                let alphaValue = map(dist, 0, ACTIVATION_DISTANCE * 1.8, 200, 0);
-                let lineWidth = map(dist, 0, ACTIVATION_DISTANCE * 1.8,
-                    window.innerWidth < 768 ? 2 : 3,
-                    window.innerWidth < 768 ? 0.3 : 0.5);
-
-                let pulseSpeed = window.innerWidth < 768 ? 0.03 : 0.05;
-                let pulse = (sin(frameCount * pulseSpeed + dist * 0.01) + 1) * 0.5;
-                alphaValue *= pulse;
+                colorMode(HSB, 360, 100, 100, 255);
+                let alpha = map(dist, 0, ACTIVATION_DISTANCE * 1.8, 255, 40);
                 
-                let connColor = color(hue(a.color), saturation(a.color), brightness(a.color), alphaValue);
-                stroke(connColor);
+                let lineWidth = map(dist, 0, ACTIVATION_DISTANCE * 1.8,
+                    window.innerWidth < 768 ? 0.8 : 1.0,
+                    window.innerWidth < 768 ? 0.1 : 0.15);
+                
+                let pulseSpeed = window.innerWidth < 768 ? 0.02 : 0.03;
+                let pulse = (sin(frameCount * pulseSpeed + dist * 0.01) + 1) * 0.3 + 0.7;
+                alpha *= pulse;
+
+                // Más brillante para destacar en el fondo gris-morado
+                stroke(350, 100, 100, alpha); // Tono rojizo más brillante
                 strokeWeight(lineWidth);
                 line(a.pos.x, a.pos.y, b.pos.x, b.pos.y);
+                colorMode(RGB, 255, 255, 255, 255); // Volver a RGB
             }
         });
     });
 }
 
 function globalPulseEffect() {
+    colorMode(HSB, 360, 100, 100, 255);
     noFill();
-    stroke(255, 0, 0, window.innerWidth < 768 ? 40 : 70);
+    stroke(350, 100, 100, window.innerWidth < 768 ? 40 : 70); // Tono rojizo más brillante
     strokeWeight(window.innerWidth < 768 ? 1 : 1.5);
     let pulseSize = (frameCount % 120) * (window.innerWidth < 768 ? 3 : 4);
     ellipse(mouseX, mouseY, pulseSize, pulseSize);
+    colorMode(RGB, 255, 255, 255, 255); // Volver a RGB
 }
 
 function windowResized() {

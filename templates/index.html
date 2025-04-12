@@ -85,16 +85,8 @@
                             <div id="auto-reply" class="tab-content">
                                 <form id="autoReplyForm">
                                     <div class="form-group">
-                                        <label for="emailType">Tipo de Email</label>
-                                        <select id="emailType" name="emailType" required>
-                                            <option value="thank_you">Gracias por tu compra</option>
-                                            <option value="welcome">Bienvenida</option>
-                                            <option value="follow_up">Seguimiento</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="customerName">Nombre del Cliente</label>
-                                        <input type="text" id="customerName" name="customerName" required>
+                                        <label for="emailContent">Email a Responder</label>
+                                        <textarea id="emailContent" name="emailContent" placeholder="Pega aquí el email al que quieres responder..." required></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="replyTone">Tono de la Respuesta</label>
@@ -142,6 +134,10 @@
                         <div class="result-side">
                             <div class="result-container">
                                 <h2>Resultado</h2>
+                                <button class="copy-btn" id="copy-result" title="Copiar al portapapeles">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <div class="copy-success">¡Copiado!</div>
                                 <div id="result" class="result-content"></div>
                             </div>
                         </div>

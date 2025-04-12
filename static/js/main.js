@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.getElementById('back-to-landing');
     const featureCards = document.querySelectorAll('.feature-card');
     const tabContents = document.querySelectorAll('.tab-content');
+    const copyButton = document.getElementById('copy-result');
+    const copySuccess = document.querySelector('.copy-success');
+    const resultDiv = document.getElementById('result');
 
     // Animación de entrada para las tarjetas
     featureCards.forEach((card, index) => {
@@ -37,11 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 'auto-reply':
                 formTitle.textContent = 'Respuesta Automática';
-                formDescription.textContent = 'Genera respuestas profesionales';
+                formDescription.textContent = 'Genera respuestas a emails con IA';
                 break;
             case 'email-writer':
                 formTitle.textContent = 'Redactor de Emails';
-                formDescription.textContent = 'Escribe emails personalizados';
+                formDescription.textContent = 'Escribe emails personalizados con IA';
                 break;
         }
         
@@ -68,6 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Restaurar efecto del mouse para P5.js
         document.body.classList.remove('no-pointer-effect');
+        
+        // Limpiar el contenido del resultado
+        document.getElementById('result').textContent = '';
     }
 
     // Manejar selección de tarjetas
@@ -89,11 +95,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Manejar botón de volver
     backButton.addEventListener('click', showLandingPage);
 
+    // Función para copiar el texto del resultado
+    copyButton.addEventListener('click', () => {
+        const resultText = resultDiv.textContent;
+        if (!resultText) return;
+        
+        navigator.clipboard.writeText(resultText)
+            .then(() => {
+                // Mostrar mensaje de éxito
+                copySuccess.classList.add('show');
+                setTimeout(() => {
+                    copySuccess.classList.remove('show');
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Error al copiar: ', err);
+            });
+    });
+
     // Form submission handlers
     const emailCampaignForm = document.getElementById('emailCampaignForm');
     const autoReplyForm = document.getElementById('autoReplyForm');
     const emailWriterForm = document.getElementById('emailWriterForm');
-    const resultDiv = document.getElementById('result');
 
     async function handleFormSubmit(form, type) {
         const submitButton = form.querySelector('.generate-btn');

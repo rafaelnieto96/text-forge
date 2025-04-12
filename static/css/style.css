@@ -190,6 +190,7 @@ h1 {
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .result-container h2 {
@@ -204,6 +205,51 @@ h1 {
     border-radius: 8px;
     white-space: pre-wrap;
     border: 1px solid var(--card-border);
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(255, 0, 0, 0.2);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.copy-btn:hover {
+    background: rgba(255, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.copy-btn i {
+    font-size: 1rem;
+}
+
+.copy-success {
+    position: absolute;
+    top: 0.5rem;
+    right: 3rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.copy-success.show {
+    opacity: 1;
 }
 
 .generate-btn {
@@ -294,17 +340,40 @@ input, textarea, select {
     border-radius: 12px;
     font-size: 1rem;
     font-family: var(--input-font);
-    background-color: rgba(60, 40, 80, 0.3);
-    color: var(--text-color);
     transition: all 0.3s ease;
     letter-spacing: 0.5px;
+    height: 3rem; /* Altura fija para todos los elementos */
+    line-height: 1.4; /* Línea de texto consistente */
 }
 
-input:focus, textarea:focus, select:focus {
+input, textarea {
+    background-color: rgba(235, 235, 240, 0.9); /* Color más grisáceo para inputs de texto */
+    color: var(--text-color);
+}
+
+select {
+    background-color: rgba(60, 40, 80, 0.3); /* Color morado para selectores */
+    color: var(--text-color);   
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 1rem) center;
+    padding-right: 2.5rem;
+}
+
+input:focus, textarea:focus {
     outline: none;
     border-color: var(--primary-light);
     box-shadow: 0 0 15px var(--glow-shadow);
-    background-color: rgba(70, 50, 90, 0.4);
+    background-color: rgba(240, 240, 245, 0.95); /* Ligeramente más claro al enfocar */
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 15px var(--glow-shadow);
+    background-color: rgba(70, 50, 90, 0.4); /* Volver al color de foco original para selectores */
 }
 
 input::placeholder, textarea::placeholder {
@@ -577,3 +646,4 @@ textarea {
 /* .no-pointer-effect canvas {
     display: none !important;
 } */ 
+

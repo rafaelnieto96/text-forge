@@ -49,10 +49,10 @@ Follow these critical rules:
 )
 
 auto_reply_template = PromptTemplate(
-    input_variables=["emailType", "customerName", "replyTone"],
+    input_variables=["emailContent", "replyTone"],
     template="""
 <instruction>
-You are a customer service professional expert in drafting appropriate email responses. Your task is to generate a complete professional response for a {emailType} email addressed to {customerName} with a {replyTone} tone.
+You are a customer service professional expert in drafting appropriate email responses. Your task is to generate a complete professional response to this email: "{emailContent}" with a {replyTone} tone.
 
 Follow these critical rules:
 <rules>
@@ -70,10 +70,10 @@ Follow these critical rules:
 
 <email_response>
 1. Greeting:
-[Appropriate greeting with the customer's name]
+[Appropriate greeting]
 
 2. Body:
-[Email body with content appropriate for the email type]
+[Email body with content appropriate for responding to the email]
 
 3. Sign-off:
 [Professional sign-off with signature]
@@ -143,22 +143,23 @@ def generate_text():
         
         response = co.generate(
             prompt=formatted_prompt,
+            model="command-r-plus",
             max_tokens=2000,
             temperature=0.2,
             stop_sequences=["</output_format>"]
         )
-        # Usar strip() para eliminar espacios en blanco al inicio y final
+        # Use strip() to remove whitespace at the beginning and end
         response_text = response.generations[0].text.strip()
         
     elif generator_type == 'auto_reply':
         formatted_prompt = auto_reply_template.format(
-            emailType=data.get('emailType'),
-            customerName=data.get('customerName'),
+            emailContent=data.get('emailContent'),
             replyTone=data.get('replyTone')
         )
         
         response = co.generate(
             prompt=formatted_prompt,
+            model="command-r-plus",
             max_tokens=2000,
             temperature=0.2,
             stop_sequences=["</email_response>"]
@@ -175,6 +176,7 @@ def generate_text():
         
         response = co.generate(
             prompt=formatted_prompt,
+            model="command-r-plus",
             max_tokens=2000,
             temperature=0.2,
             stop_sequences=["</email_content>"]

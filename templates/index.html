@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Forge - Generador de Texto IA</title>
+    <title>Text Forge - AI Text Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
+
 <body>
     <div id="background-container"></div>
     <div class="container">
@@ -18,25 +20,28 @@
                     <h1>Text Forge</h1>
                 </div>
                 <div class="subtitle">
-                    <p>Tu generador de texto con inteligencia artificial</p>
+                    <p>Your AI-powered text generator</p>
                 </div>
             </header>
 
             <div class="features-description">
                 <div class="feature-card" data-feature="email-campaign">
                     <i class="fas fa-envelope-open-text"></i>
-                    <h3>Campaña de Email</h3>
-                    <p>Crea campañas de marketing efectivas para tu producto o servicio. Solo necesitas describir el producto y definir tu audiencia objetivo.</p>
+                    <h3>Email Campaign</h3>
+                    <p>Create effective marketing campaigns for your product or service. Just describe your product and
+                        define your target audience.</p>
                 </div>
                 <div class="feature-card" data-feature="auto-reply">
                     <i class="fas fa-reply"></i>
-                    <h3>Respuesta Automática</h3>
-                    <p>Genera respuestas profesionales a cualquier email. Simplemente pega el contenido del email y elige el tono deseado.</p>
+                    <h3>Auto Reply</h3>
+                    <p>Generate professional responses to any email. Simply paste the email content and choose the
+                        desired tone.</p>
                 </div>
                 <div class="feature-card" data-feature="email-writer">
                     <i class="fas fa-pen-fancy"></i>
-                    <h3>Redactor de Emails</h3>
-                    <p>Escribe emails personalizados con facilidad. Define el propósito, destinatario y puntos clave que quieres incluir.</p>
+                    <h3>Email Writer</h3>
+                    <p>Write personalized emails with ease. Define the purpose, recipient, and key points you want to
+                        include.</p>
                 </div>
             </div>
         </section>
@@ -48,11 +53,11 @@
                     <div class="form-header">
                         <button id="back-to-landing" class="back-btn">
                             <i class="fas fa-arrow-left"></i>
-                            Volver
+                            Back
                         </button>
                         <div class="form-title">
-                            <h1>Campaña de Email</h1>
-                            <p>Crea campañas de marketing con IA</p>
+                            <h1>Email Campaign</h1>
+                            <p>Create marketing campaigns with AI</p>
                         </div>
                     </div>
                     <div class="form-layout">
@@ -60,24 +65,24 @@
                             <div id="email-campaign" class="tab-content">
                                 <form id="emailCampaignForm">
                                     <div class="form-group">
-                                        <label for="product">Producto o Servicio</label>
+                                        <label for="product">Product or Service</label>
                                         <input type="text" id="product" name="product" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="target">Público Objetivo</label>
+                                        <label for="target">Target Audience</label>
                                         <input type="text" id="target" name="target" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="tone">Tono del Mensaje</label>
+                                        <label for="tone">Message Tone</label>
                                         <select id="tone" name="tone" required>
                                             <option value="formal">Formal</option>
                                             <option value="informal">Informal</option>
-                                            <option value="friendly">Amigable</option>
-                                            <option value="professional">Profesional</option>
+                                            <option value="friendly">Friendly</option>
+                                            <option value="professional">Professional</option>
                                         </select>
                                     </div>
                                     <button type="submit" class="generate-btn">
-                                        <span class="btn-text">Generar</span>
+                                        <span class="btn-text">Generate</span>
                                         <span class="loading-dots">...</span>
                                     </button>
                                 </form>
@@ -85,19 +90,21 @@
                             <div id="auto-reply" class="tab-content">
                                 <form id="autoReplyForm">
                                     <div class="form-group">
-                                        <label for="emailContent">Email a Responder</label>
-                                        <textarea id="emailContent" name="emailContent" placeholder="Pega aquí el email al que quieres responder..." required></textarea>
+                                        <label for="emailContent">Email to Reply to</label>
+                                        <textarea id="emailContent" name="emailContent" class="fixed-textarea"
+                                            placeholder="Paste here the email you want to reply to..."
+                                            required></textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label for="replyTone">Tono de la Respuesta</label>
+                                        <label for="replyTone">Response Tone</label>
                                         <select id="replyTone" name="replyTone" required>
                                             <option value="formal">Formal</option>
                                             <option value="informal">Informal</option>
-                                            <option value="friendly">Amigable</option>
+                                            <option value="friendly">Friendly</option>
                                         </select>
                                     </div>
                                     <button type="submit" class="generate-btn">
-                                        <span class="btn-text">Generar</span>
+                                        <span class="btn-text">Generate</span>
                                         <span class="loading-dots">...</span>
                                     </button>
                                 </form>
@@ -105,27 +112,28 @@
                             <div id="email-writer" class="tab-content">
                                 <form id="emailWriterForm">
                                     <div class="form-group">
-                                        <label for="emailPurpose">Propósito del Email</label>
+                                        <label for="emailPurpose">Email Purpose</label>
                                         <input type="text" id="emailPurpose" name="emailPurpose" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="recipient">Destinatario</label>
+                                        <label for="recipient">Recipient</label>
                                         <input type="text" id="recipient" name="recipient" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="keyPoints">Puntos Clave a Incluir</label>
-                                        <textarea id="keyPoints" name="keyPoints" required></textarea>
+                                        <label for="keyPoints">Key Points to Include</label>
+                                        <textarea id="keyPoints" name="keyPoints" class="fixed-textarea"
+                                            required></textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label for="writerTone">Tono del Email</label>
+                                        <label for="writerTone">Email Tone</label>
                                         <select id="writerTone" name="writerTone" required>
                                             <option value="formal">Formal</option>
                                             <option value="informal">Informal</option>
-                                            <option value="friendly">Amigable</option>
+                                            <option value="friendly">Friendly</option>
                                         </select>
                                     </div>
                                     <button type="submit" class="generate-btn">
-                                        <span class="btn-text">Generar</span>
+                                        <span class="btn-text">Generate</span>
                                         <span class="loading-dots">...</span>
                                     </button>
                                 </form>
@@ -133,11 +141,11 @@
                         </div>
                         <div class="result-side">
                             <div class="result-container">
-                                <h2>Resultado</h2>
-                                <button class="copy-btn" id="copy-result" title="Copiar al portapapeles">
+                                <h2>Result</h2>
+                                <button class="copy-btn" id="copy-result" title="Copy to clipboard">
                                     <i class="fas fa-copy"></i>
                                 </button>
-                                <div class="copy-success">¡Copiado!</div>
+                                <div class="copy-success">Copied!</div>
                                 <div id="result" class="result-content"></div>
                             </div>
                         </div>
@@ -151,4 +159,5 @@
     <script src="{{ url_for('static', filename='js/ai-background.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
-</html> 
+
+</html>

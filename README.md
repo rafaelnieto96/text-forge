@@ -1,72 +1,72 @@
-# Text Forge - Generador de Texto con IA
+# Text Forge - AI Text Generator
 
-Text Forge es una aplicación web que utiliza inteligencia artificial para generar diferentes tipos de contenido de texto, específicamente enfocado en la creación de emails y campañas de marketing.
+Text Forge is a web application that uses artificial intelligence to generate different types of text content, specifically focused on creating emails and marketing campaigns.
 
-## Características
+## Features
 
-- Generador de campañas de marketing por email
-- Redactor de respuestas automáticas a emails
-- Redactor de emails personalizados
-- Interfaz moderna y fácil de usar
-- Diseño responsive
+- Email marketing campaign generator
+- Automatic email response writer
+- Personalized email writer
+- Modern and easy-to-use interface
+- Responsive design
 
-## Requisitos
+## Requirements
 
-- Python 3.8 o superior
-- Cuenta en Cohere para obtener una API key
+- Python 3.8 or higher
+- Cohere account to obtain an API key
 
-## Instalación
+## Installation
 
-1. Clona este repositorio:
+1. Clone this repository:
 ```bash
-git clone [URL_DEL_REPOSITORIO]
+git clone [REPOSITORY_URL]
 cd text-forge
 ```
 
-2. Crea un entorno virtual e instala las dependencias:
+2. Create a virtual environment and install dependencies:
 ```bash
 python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Crea un archivo `.env` en la raíz del proyecto y añade tu API key de Cohere:
+3. Create a `.env` file in the root of the project and add your Cohere API key:
 ```
-COHERE_API_KEY=tu_api_key_aqui
+COHERE_API_KEY=your_api_key_here
 ```
 
-## Uso
+## Usage
 
-1. Inicia el servidor Flask:
+1. Start the Flask server:
 ```bash
 python app.py
 ```
 
-2. Abre tu navegador y visita `http://localhost:5000`
+2. Open your browser and visit `http://localhost:5000`
 
-3. Selecciona el tipo de generador que deseas usar:
-   - Campaña de Email: Para crear campañas de marketing
-   - Respuesta Automática: Para generar respuestas a emails
-   - Redactor de Emails: Para crear emails personalizados
+3. Select the type of generator you want to use:
+   - Email Campaign: To create marketing campaigns
+   - Auto Reply: To generate responses to emails
+   - Email Writer: To create personalized emails
 
-4. Completa el formulario con los detalles necesarios y haz clic en "Generar"
+4. Fill out the form with the necessary details and click "Generate"
 
-## Despliegue en PythonAnywhere
+## Deployment on PythonAnywhere
 
-1. Crea una cuenta en [PythonAnywhere](https://www.pythonanywhere.com/)
-2. Sube los archivos del proyecto
-3. Configura un entorno virtual e instala las dependencias
-4. Configura el archivo `.env` con tu API key
-5. Configura el archivo WSGI para que apunte a tu aplicación Flask
-6. Reinicia la aplicación
+1. Create an account on [PythonAnywhere](https://www.pythonanywhere.com/)
+2. Upload the project files
+3. Set up a virtual environment and install dependencies
+4. Configure the `.env` file with your API key
+5. Configure the WSGI file to point to your Flask application
+6. Restart the application
 
-## Tecnologías Utilizadas
+## Technologies Used
 
 - Flask (Backend)
-- Cohere (API de IA)
-- LangChain (Framework de IA)
+- Cohere (AI API)
+- LangChain (AI Framework)
 - HTML, CSS, JavaScript (Frontend)
 
-## Licencia
+## License
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles. 
+This project is under the MIT License. See the `LICENSE` file for more details. 

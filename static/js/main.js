@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const copySuccess = document.querySelector('.copy-success');
     const resultDiv = document.getElementById('result');
 
-    // Animación de entrada para las tarjetas
     featureCards.forEach((card, index) => {
         card.style.opacity = 0;
         card.style.transform = 'translateY(20px)';
@@ -21,37 +20,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function showFormSection(featureId) {
-        // Ocultar landing page
         landingPage.classList.add('hidden-section');
         landingPage.classList.remove('active-section');
-        
-        // Mostrar formulario
+
         formSection.classList.remove('hidden-section');
         formSection.classList.add('active-section');
 
-        // Cambiar título y descripción según el formulario seleccionado
         const formTitle = document.querySelector('.form-title h1');
         const formDescription = document.querySelector('.form-title p');
-        
-        switch(featureId) {
+
+        switch (featureId) {
             case 'email-campaign':
-                formTitle.textContent = 'Campaña de Email';
-                formDescription.textContent = 'Crea campañas de marketing con IA';
+                formTitle.textContent = 'Email Campaign';
+                formDescription.textContent = 'Create marketing campaigns with AI';
                 break;
             case 'auto-reply':
-                formTitle.textContent = 'Respuesta Automática';
-                formDescription.textContent = 'Genera respuestas a emails con IA';
+                formTitle.textContent = 'Auto Reply';
+                formDescription.textContent = 'Generate email responses with AI';
                 break;
             case 'email-writer':
-                formTitle.textContent = 'Redactor de Emails';
-                formDescription.textContent = 'Escribe emails personalizados con IA';
+                formTitle.textContent = 'Email Writer';
+                formDescription.textContent = 'Write personalized emails with AI';
                 break;
         }
-        
-        // Desactivar efecto del mouse para P5.js
+
         document.body.classList.add('no-pointer-effect');
 
-        // Mostrar el formulario seleccionado
         tabContents.forEach(content => {
             content.classList.remove('active');
             if (content.id === featureId) {
@@ -61,29 +55,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showLandingPage() {
-        // Ocultar formulario
         formSection.classList.add('hidden-section');
         formSection.classList.remove('active-section');
-        
-        // Mostrar landing page
+
         landingPage.classList.remove('hidden-section');
         landingPage.classList.add('active-section');
-        
-        // Restaurar efecto del mouse para P5.js
+
         document.body.classList.remove('no-pointer-effect');
-        
-        // Limpiar el contenido del resultado
+
         document.getElementById('result').textContent = '';
     }
 
-    // Manejar selección de tarjetas
     featureCards.forEach(card => {
         card.addEventListener('click', () => {
             console.log('Card clicked');
             const featureId = card.getAttribute('data-feature');
             console.log('Feature ID:', featureId);
-            
-            // Efecto visual al hacer clic
+
             card.style.transform = 'scale(0.98)';
             setTimeout(() => {
                 card.style.transform = 'translateY(0) scale(1)';
@@ -92,51 +80,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Manejar botón de volver
     backButton.addEventListener('click', showLandingPage);
 
-    // Función para copiar el texto del resultado
     copyButton.addEventListener('click', () => {
         const resultText = resultDiv.textContent;
         if (!resultText) return;
-        
-        navigator.clipboard.writeText(resultText)
-            .then(() => {
-                // Mostrar mensaje de éxito
-                copySuccess.classList.add('show');
-                setTimeout(() => {
-                    copySuccess.classList.remove('show');
-                }, 2000);
-            })
-            .catch(err => {
-                console.error('Error al copiar: ', err);
-            });
+
+        const textarea = document.createElement('textarea');
+        textarea.value = resultText;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+
+        copySuccess.classList.add('show');
+        setTimeout(() => {
+            copySuccess.classList.remove('show');
+        }, 2000);
     });
 
-    // Form submission handlers
     const emailCampaignForm = document.getElementById('emailCampaignForm');
     const autoReplyForm = document.getElementById('autoReplyForm');
     const emailWriterForm = document.getElementById('emailWriterForm');
 
     async function handleFormSubmit(form, type) {
         const submitButton = form.querySelector('.generate-btn');
-        
-        // Limpiar resultado anterior
-        resultDiv.textContent = "Generando...";
-        
-        // Deshabilitar el botón durante la generación
+
+        resultDiv.textContent = "Generating...";
+
         submitButton.disabled = true;
-        
-        // Mostrar estado de carga
         submitButton.classList.add('loading');
-        
+
         const formData = new FormData(form);
         const data = {
             type: type,
             ...Object.fromEntries(formData)
         };
 
-        console.log('Enviando solicitud con datos:', data);
+        console.log('Sending request with data:', data);
 
         try {
             const response = await fetch('/generate', {
@@ -148,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                throw new Error('Error en la generación del texto');
+                throw new Error('Error in text generation');
             }
 
             const result = await response.json();
@@ -156,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             resultDiv.textContent = `Error: ${error.message}`;
         } finally {
-            // Quitar estado de carga y habilitar el botón
             submitButton.classList.remove('loading');
             submitButton.disabled = false;
         }

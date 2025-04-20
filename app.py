@@ -127,79 +127,91 @@ def home():
 
 @app.route('/generate', methods=['POST'])
 def generate_text():
-    data = request.json
-    generator_type = data.get('type')
-    
-    print(f"Generating text with type: {generator_type}")
-    print(f"Data received: {data}")
-    
-    if generator_type == 'email_campaign':
-        # Use the Cohere client directly for more control over parameters
-        formatted_prompt = email_campaign_template.format(
-            product=data.get('product'),
-            target=data.get('target'),
-            tone=data.get('tone')
-        )
+    try:
+        data = request.json
+        generator_type = data.get('type')
         
-        response = co.generate(
-            prompt=formatted_prompt,
-            model="command-r-plus",
-            max_tokens=2000,
-            temperature=0.2,
-            stop_sequences=["</output_format>"]
-        )
-        # Use strip() to remove whitespace at the beginning and end
-        response_text = response.generations[0].text.strip()
+        print(f"Generating text with type: {generator_type}")
+        print(f"Data received: {data}")
         
-    elif generator_type == 'auto_reply':
-        formatted_prompt = auto_reply_template.format(
-            emailContent=data.get('emailContent'),
-            replyTone=data.get('replyTone')
-        )
+        if generator_type == 'email_campaign':
+            # Use the Cohere client directly for more control over parameters
+            formatted_prompt = email_campaign_template.format(
+                product=data.get('product'),
+                target=data.get('target'),
+                tone=data.get('tone')
+            )
+            
+            response = co.generate(
+                prompt=formatted_prompt,
+                model="command-r-plus",
+                max_tokens=2000,
+                temperature=0.2,
+                stop_sequences=["</output_format>"]
+            )
+            # Use strip() to remove whitespace at the beginning and end
+            response_text = response.generations[0].text.strip()
+            
+        elif generator_type == 'auto_reply':
+            formatted_prompt = auto_reply_template.format(
+                emailContent=data.get('emailContent'),
+                replyTone=data.get('replyTone')
+            )
+            
+            response = co.generate(
+                prompt=formatted_prompt,
+                model="command-r-plus",
+                max_tokens=2000,
+                temperature=0.2,
+                stop_sequences=["</email_response>"]
+            )
+            response_text = response.generations[0].text.strip()
+            
+        elif generator_type == 'email_writer':
+            formatted_prompt = email_writer_template.format(
+                emailPurpose=data.get('emailPurpose'),
+                recipient=data.get('recipient'),
+                writerTone=data.get('writerTone'),
+                keyPoints=data.get('keyPoints')
+            )
+            
+            response = co.generate(
+                prompt=formatted_prompt,
+                model="command-r-plus",
+                max_tokens=2000,
+                temperature=0.2,
+                stop_sequences=["</email_content>"]
+            )
+            response_text = response.generations[0].text.strip()
+            
+        else:
+            print(f"Error: Invalid generator type: {generator_type}")
+            return jsonify({'error': 'Invalid generator type'}), 400
         
-        response = co.generate(
-            prompt=formatted_prompt,
-            model="command-r-plus",
-            max_tokens=2000,
-            temperature=0.2,
-            stop_sequences=["</email_response>"]
-        )
-        response_text = response.generations[0].text.strip()
+        # Process response to clean up
+        # 1. Remove introductory lines
+        lines = response_text.split('\n')
+        processed_lines = []
+        for line in lines:
+            if not line.startswith("Here's") and not line.startswith("I hope"):
+                processed_lines.append(line)
         
-    elif generator_type == 'email_writer':
-        formatted_prompt = email_writer_template.format(
-            emailPurpose=data.get('emailPurpose'),
-            recipient=data.get('recipient'),
-            writerTone=data.get('writerTone'),
-            keyPoints=data.get('keyPoints')
-        )
+        processed_response = '\n'.join(processed_lines)
         
-        response = co.generate(
-            prompt=formatted_prompt,
-            model="command-r-plus",
-            max_tokens=2000,
-            temperature=0.2,
-            stop_sequences=["</email_content>"]
-        )
-        response_text = response.generations[0].text.strip()
+        # 2. Remove any XML tags that might appear in the response
+        processed_response = re.sub(r'<[^>]+>', '', processed_response)
         
-    else:
-        return jsonify({'error': 'Invalid generator type'}), 400
+        return jsonify({'response': processed_response})
     
-    # Process response to clean up
-    # 1. Remove introductory lines
-    lines = response_text.split('\n')
-    processed_lines = []
-    for line in lines:
-        if not line.startswith("Here's") and not line.startswith("I hope"):
-            processed_lines.append(line)
-    
-    processed_response = '\n'.join(processed_lines)
-    
-    # 2. Remove any XML tags that might appear in the response
-    processed_response = re.sub(r'<[^>]+>', '', processed_response)
-    
-    return jsonify({'response': processed_response})
+    except Exception as e:
+        # Log the error with more details to the console
+        import traceback
+        error_msg = f"Error generating text: {str(e)}"
+        print(error_msg)
+        print(traceback.format_exc())
+        
+        # Return a user-friendly error message
+        return jsonify({'error': 'There was an error processing your request'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)

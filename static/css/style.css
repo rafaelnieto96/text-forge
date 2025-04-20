@@ -682,3 +682,36 @@ textarea {
 .no-pointer-effect #background-container canvas {
     pointer-events: none !important;
 }
+
+.error-message {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: #ffcccc;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 0, 0, 0.4);
+    font-weight: 500;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.test-error-btn {
+    margin-top: 0.8rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 0, 0, 0.3);
+    color: #ffcccc;
+    border: 1px solid rgba(255, 0, 0, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--body-font);
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.test-error-btn:hover {
+    background-color: rgba(255, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.test-error-btn:active {
+    transform: translateY(0);
+}

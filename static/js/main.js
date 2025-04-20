@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyButton = document.getElementById('copy-result');
     const copySuccess = document.querySelector('.copy-success');
     const resultDiv = document.getElementById('result');
+    const testErrorBtn = document.getElementById('test-error-btn');
 
     featureCards.forEach((card, index) => {
         card.style.opacity = 0;
@@ -132,14 +133,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(data)
             });
 
+            const result = await response.json();
+
             if (!response.ok) {
-                throw new Error('Error in text generation');
+                // Handle error with status code
+                console.error('Error response:', result);
+                resultDiv.innerHTML = `<div class="error-message">There was an error</div>`;
+                throw new Error(result.error || 'Error in text generation');
             }
 
-            const result = await response.json();
+            if (result.error) {
+                // Handle error in the response body
+                console.error('Error in response body:', result.error);
+                resultDiv.innerHTML = `<div class="error-message">There was an error</div>`;
+                throw new Error(result.error);
+            }
+
             resultDiv.textContent = result.response;
         } catch (error) {
-            resultDiv.textContent = `Error: ${error.message}`;
+            console.error('Request failed:', error);
+            if (!resultDiv.innerHTML.includes('error-message')) {
+                resultDiv.innerHTML = `<div class="error-message">There was an error</div>`;
+            }
         } finally {
             submitButton.classList.remove('loading');
             submitButton.disabled = false;

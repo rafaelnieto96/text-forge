@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultDiv = document.getElementById('result');
     const testErrorBtn = document.getElementById('test-error-btn');
 
+    function setupMobileMode() {
+        if (window.innerWidth <= 768) {
+            document.body.style.overflow = 'auto';
+            document.body.style.height = 'auto';
+        } else {
+            document.body.style.overflow = 'hidden';
+            document.body.style.height = '100vh';
+        }
+    }
+
+    setupMobileMode();
+    window.addEventListener('resize', setupMobileMode);
+
     featureCards.forEach((card, index) => {
         card.style.opacity = 0;
         card.style.transform = 'translateY(20px)';
@@ -47,6 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.body.classList.add('no-pointer-effect');
 
+        if (window.innerWidth <= 768) {
+            window.scrollTo(0, 0);
+        }
+
         tabContents.forEach(content => {
             content.classList.remove('active');
             if (content.id === featureId) {
@@ -64,14 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.body.classList.remove('no-pointer-effect');
 
+        if (window.innerWidth <= 768) {
+            window.scrollTo(0, 0);
+        }
+
         document.getElementById('result').textContent = '';
     }
 
     featureCards.forEach(card => {
         card.addEventListener('click', () => {
-            console.log('Card clicked');
             const featureId = card.getAttribute('data-feature');
-            console.log('Feature ID:', featureId);
 
             card.style.transform = 'scale(0.98)';
             setTimeout(() => {
@@ -122,8 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ...Object.fromEntries(formData)
         };
 
-        console.log('Sending request with data:', data);
-
         try {
             const response = await fetch('/generate', {
                 method: 'POST',
@@ -136,20 +153,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (!response.ok) {
-                // Handle error with status code
                 console.error('Error response:', result);
                 resultDiv.innerHTML = `<div class="error-message">There was an error</div>`;
                 throw new Error(result.error || 'Error in text generation');
             }
 
             if (result.error) {
-                // Handle error in the response body
                 console.error('Error in response body:', result.error);
                 resultDiv.innerHTML = `<div class="error-message">There was an error</div>`;
                 throw new Error(result.error);
             }
 
             resultDiv.textContent = result.response;
+
+            if (window.innerWidth <= 768) {
+                const resultSide = document.querySelector('.result-side');
+                resultSide.scrollIntoView({ behavior: 'smooth' });
+            }
         } catch (error) {
             console.error('Request failed:', error);
             if (!resultDiv.innerHTML.includes('error-message')) {

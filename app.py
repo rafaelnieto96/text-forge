@@ -5,8 +5,16 @@ import cohere
 import re
 from langchain.prompts import PromptTemplate
 
+if not os.path.exists('.env'):
+    print("Error: El archivo .env no existe. Por favor, cree un archivo .env con su COHERE_API_KEY.")
+    exit(1)
+
 # Load environment variables
 load_dotenv()
+
+if not os.getenv('COHERE_API_KEY'):
+    print("Error: COHERE_API_KEY no está definida en el archivo .env. Por favor, añada su clave API.")
+    exit(1)
 
 app = Flask(__name__)
 
@@ -214,4 +222,4 @@ def generate_text():
         return jsonify({'error': 'There was an error processing your request'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run()

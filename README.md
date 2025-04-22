@@ -51,15 +51,6 @@ python app.py
 
 4. Fill out the form with the necessary details and click "Generate"
 
-## Deployment on PythonAnywhere
-
-1. Create an account on [PythonAnywhere](https://www.pythonanywhere.com/)
-2. Upload the project files
-3. Set up a virtual environment and install dependencies
-4. Configure the `.env` file with your API key
-5. Configure the WSGI file to point to your Flask application
-6. Restart the application
-
 ## Technologies Used
 
 - Flask (Backend)

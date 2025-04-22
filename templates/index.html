@@ -3,18 +3,22 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Text Forge - AI Text Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='img/icon.png') }}" type="image/png">
 </head>
 
 <body>
     <div id="background-container"></div>
-    <div class="container">
-        <!-- Landing Page Section -->
-        <section id="landing-page" class="active-section">
+
+    <!-- Landing Page Section -->
+    <section id="landing-page" class="active-section">
+        <div class="container">
             <header>
                 <div class="logo">
                     <h1>Text Forge</h1>
@@ -44,116 +48,115 @@
                         include.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Form Section -->
-        <section id="form-section" class="hidden-section">
-            <div class="container">
-                <div class="generator-content">
-                    <div class="form-header">
-                        <button id="back-to-landing" class="back-btn">
-                            <i class="fas fa-arrow-left"></i>
-                            Back
-                        </button>
-                        <div class="form-title">
-                            <h1>Email Campaign</h1>
-                            <p>Create marketing campaigns with AI</p>
+    <!-- Form Section -->
+    <section id="form-section" class="hidden-section">
+        <div class="container">
+            <div class="generator-content">
+                <div class="form-header">
+                    <button id="back-to-landing" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <div class="form-title">
+                        <h1>Email Campaign</h1>
+                        <p>Create marketing campaigns with AI</p>
+                    </div>
+                </div>
+                <div class="form-layout">
+                    <div class="form-side">
+                        <div id="email-campaign" class="tab-content">
+                            <form id="emailCampaignForm">
+                                <div class="form-group">
+                                    <label for="product">Product or Service</label>
+                                    <input type="text" id="product" name="product" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="target">Target Audience</label>
+                                    <input type="text" id="target" name="target" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tone">Message Tone</label>
+                                    <select id="tone" name="tone" required>
+                                        <option value="formal">Formal</option>
+                                        <option value="informal">Informal</option>
+                                        <option value="friendly">Friendly</option>
+                                        <option value="professional">Professional</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="generate-btn">
+                                    <span class="btn-text">Generate</span>
+                                    <span class="loading-dots">...</span>
+                                </button>
+                            </form>
+                        </div>
+                        <div id="auto-reply" class="tab-content">
+                            <form id="autoReplyForm">
+                                <div class="form-group">
+                                    <label for="emailContent">Email to Reply to</label>
+                                    <textarea id="emailContent" name="emailContent" class="fixed-textarea"
+                                        placeholder="Paste here the email you want to reply to..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="replyTone">Response Tone</label>
+                                    <select id="replyTone" name="replyTone" required>
+                                        <option value="formal">Formal</option>
+                                        <option value="informal">Informal</option>
+                                        <option value="friendly">Friendly</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="generate-btn">
+                                    <span class="btn-text">Generate</span>
+                                    <span class="loading-dots">...</span>
+                                </button>
+                            </form>
+                        </div>
+                        <div id="email-writer" class="tab-content">
+                            <form id="emailWriterForm">
+                                <div class="form-group">
+                                    <label for="emailPurpose">Email Purpose</label>
+                                    <input type="text" id="emailPurpose" name="emailPurpose" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient">Recipient</label>
+                                    <input type="text" id="recipient" name="recipient" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="keyPoints">Key Points to Include</label>
+                                    <textarea id="keyPoints" name="keyPoints" class="fixed-textarea"
+                                        required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="writerTone">Email Tone</label>
+                                    <select id="writerTone" name="writerTone" required>
+                                        <option value="formal">Formal</option>
+                                        <option value="informal">Informal</option>
+                                        <option value="friendly">Friendly</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="generate-btn">
+                                    <span class="btn-text">Generate</span>
+                                    <span class="loading-dots">...</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
-                    <div class="form-layout">
-                        <div class="form-side">
-                            <div id="email-campaign" class="tab-content">
-                                <form id="emailCampaignForm">
-                                    <div class="form-group">
-                                        <label for="product">Product or Service</label>
-                                        <input type="text" id="product" name="product" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="target">Target Audience</label>
-                                        <input type="text" id="target" name="target" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="tone">Message Tone</label>
-                                        <select id="tone" name="tone" required>
-                                            <option value="formal">Formal</option>
-                                            <option value="informal">Informal</option>
-                                            <option value="friendly">Friendly</option>
-                                            <option value="professional">Professional</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="generate-btn">
-                                        <span class="btn-text">Generate</span>
-                                        <span class="loading-dots">...</span>
-                                    </button>
-                                </form>
-                            </div>
-                            <div id="auto-reply" class="tab-content">
-                                <form id="autoReplyForm">
-                                    <div class="form-group">
-                                        <label for="emailContent">Email to Reply to</label>
-                                        <textarea id="emailContent" name="emailContent" class="fixed-textarea"
-                                            placeholder="Paste here the email you want to reply to..."
-                                            required></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="replyTone">Response Tone</label>
-                                        <select id="replyTone" name="replyTone" required>
-                                            <option value="formal">Formal</option>
-                                            <option value="informal">Informal</option>
-                                            <option value="friendly">Friendly</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="generate-btn">
-                                        <span class="btn-text">Generate</span>
-                                        <span class="loading-dots">...</span>
-                                    </button>
-                                </form>
-                            </div>
-                            <div id="email-writer" class="tab-content">
-                                <form id="emailWriterForm">
-                                    <div class="form-group">
-                                        <label for="emailPurpose">Email Purpose</label>
-                                        <input type="text" id="emailPurpose" name="emailPurpose" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="recipient">Recipient</label>
-                                        <input type="text" id="recipient" name="recipient" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="keyPoints">Key Points to Include</label>
-                                        <textarea id="keyPoints" name="keyPoints" class="fixed-textarea"
-                                            required></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="writerTone">Email Tone</label>
-                                        <select id="writerTone" name="writerTone" required>
-                                            <option value="formal">Formal</option>
-                                            <option value="informal">Informal</option>
-                                            <option value="friendly">Friendly</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="generate-btn">
-                                        <span class="btn-text">Generate</span>
-                                        <span class="loading-dots">...</span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="result-side">
-                            <div class="result-container">
-                                <h2>Result</h2>
-                                <button class="copy-btn" id="copy-result" title="Copy to clipboard">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                                <div class="copy-success">Copied!</div>
-                                <div id="result" class="result-content"></div>
-                            </div>
+                    <div class="result-side">
+                        <div class="result-container">
+                            <h2>Result</h2>
+                            <button class="copy-btn" id="copy-result" title="Copy to clipboard">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <div class="copy-success">Copied!</div>
+                            <div id="result" class="result-content"></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
     <script src="{{ url_for('static', filename='js/ai-background.js') }}"></script>

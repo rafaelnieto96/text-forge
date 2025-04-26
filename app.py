@@ -5,16 +5,10 @@ import cohere
 import re
 from langchain.prompts import PromptTemplate
 
-if not os.path.exists('.env'):
-    print("Error: El archivo .env no existe. Por favor, cree un archivo .env con su COHERE_API_KEY.")
-    exit(1)
-
-# Load environment variables
-load_dotenv()
-
-if not os.getenv('COHERE_API_KEY'):
-    print("Error: COHERE_API_KEY no está definida en el archivo .env. Por favor, añada su clave API.")
-    exit(1)
+try:
+    load_dotenv()
+except Exception:
+    pass
 
 app = Flask(__name__)
 
